@@ -2,7 +2,7 @@
  * @param {number[]} nums
  * @return {number}
  */
- var maxSubArray = function (nums) {
+var maxSubArray = function (nums) {
     let max = -Infinity
     let sum = 0
     // let start = 0
@@ -13,17 +13,18 @@
 
         sum += nums[i]
         max = Math.max(max, sum)
-
-        if(sum === max){
-            start = time
-            end = i
-        }
+        // 如果本次相加和为最大值，则储存开始和结束索引
+        // if(sum === max){
+        //    start = time
+        //    end = i
+        // }
 
         // console.log(sum, '     ', time, 'i:', i, start, end)
-
+        
+        // 本次叠加至数组最后一位
         if (i == nums.length - 1) {
-            sum = 0
-            i = time++
+            sum = 0 // 清空相加的和
+            i = time++ // 赋值从第几位开始(这里用后++是因为i值有i++， 所以只需要让time自增即可)
         }
     }
     // console.log('max:', max);
