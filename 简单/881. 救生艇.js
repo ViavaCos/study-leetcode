@@ -17,6 +17,9 @@
  * @return {number}
  */
 var numRescueBoats = function(people, limit) {
+    // 将待救援人员的体重进行排序，这样同乘的2人体重将占满最大空间
+    people = people.sort((a,b) => b - a)
+    
     let boatsNum = 0
     for (let i = 0; i < people.length; i++) {
         // 若只有一个人等待救援，那直接开走一条船
@@ -44,14 +47,17 @@ var numRescueBoats = function(people, limit) {
             
             // 当前这个人满足共乘一船
             if(people[k] <= diff) {
-                diff -= people[k]   // 计算当前这条船的剩余容量
+                // diff -= people[k]   // 计算当前这条船的剩余容量
                 people.splice(k, 1) // 从待救援人员中，去掉此人
+                
+                // 因为只能同乘2人，所以找到符合要求的人选即进入下条船的判断
+                break;
             }
-            // 如果船已满，则不再寻找共乘一船的人
-            if(diff == 0) break;
+            // // 如果船已满，则不再寻找共乘一船的人
+            // if(diff == 0) break;
 
-            // 若船未满
-            k = -1 // 回溯到起始索引 (i++ 后索引为0)
+            // // 若船未满
+            // k = -1 // 回溯到起始索引 (i++ 后索引为0)
         }
     }
     return boatsNum
