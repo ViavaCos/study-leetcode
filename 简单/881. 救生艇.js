@@ -17,53 +17,34 @@
  * @return {number}
  */
 var numRescueBoats = function(people, limit) {
-    // 将待救援人员的体重进行排序，这样同乘的2人体重将占满最大空间
+    // 将待救援人员的体重进行排序
     people = people.sort((a,b) => b - a)
     
-    let boatsNum = 0
-    for (let i = 0; i < people.length; i++) {
-        // 若只有一个人等待救援，那直接开走一条船
-        if(people.length == 1) {
-            boatsNum++;
-            return boatsNum
+    let b = 0
+    let l = 0
+    let r = people.length - 1
+
+    while(l <= r){
+        let s = people[l] + people[r]
+        if(s > limit) {
+            // 两人体重大于限制则说明左边一人一船
+            l++
+        } else {
+            // 反之，则两人同乘一船
+            l++;
+            r--;
         }
-
-        boatsNum++ // 准备好一条船
-        // 计算当前船只的剩余容量
-        let diff = limit - people[i]
-        people.splice(i, 1); // 从待救援人员中，去掉此人
-
-        // 若当前这个人刚好占满一条船的全部容量
-        if(diff == 0) {
-            i = -1 // 回溯到起始索引 (i++ 后索引为0)
-            continue // 直接开走这条船
-        }
-
-        for (let k = 0; k < people.length; k++) {
-            i = -1 // 直接回溯
-
-            // 当前这个人的体重不满足共乘一船，则换下一个人来测试
-            if(people[k] > diff) continue;
-            
-            // 当前这个人满足共乘一船
-            if(people[k] <= diff) {
-                // diff -= people[k]   // 计算当前这条船的剩余容量
-                people.splice(k, 1) // 从待救援人员中，去掉此人
-                
-                // 因为只能同乘2人，所以找到符合要求的人选即进入下条船的判断
-                break;
-            }
-            // // 如果船已满，则不再寻找共乘一船的人
-            // if(diff == 0) break;
-
-            // // 若船未满
-            // k = -1 // 回溯到起始索引 (i++ 后索引为0)
-        }
+        b++
     }
-    return boatsNum
+    
+    return b
 };
 
-
+/**
+ * 之前的写法陷入了误区，--> 另一人的体重需要趋近于最大体重
+ * 所以放弃了 首尾相加即可满足条件 的逻辑。。
+ * 至于为什么会陷入这个误区，可能是因为一开始忘记了只能两人同乘的限制了。。
+ */
 
 let people = [1,2], limit = 3; // 1 艘船载 (1, 2)
 console.log(numRescueBoats(people, limit));
@@ -74,5 +55,5 @@ console.log(numRescueBoats(people, limit));
 people = [3,5,3,4]; limit = 5; // 4 艘船分别载 (3), (3), (4), (5)
 console.log(numRescueBoats(people, limit));
 
-people = [21,40,16,24,30]; limit = 50;
+people = [21,40,16,24,30]; limit = 50; // 3
 console.log(numRescueBoats(people, limit));
