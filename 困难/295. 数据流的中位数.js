@@ -11,37 +11,37 @@
      * @return {void}
      */
     MedianFinder.prototype.addNum = function(num) {
-        let len = this.dataArr.length
-        if(!len) {
-            this.dataArr.push(num)
-            return
-        }
+        // let len = this.dataArr.length
+        // if(!len) {
+        //     this.dataArr.push(num)
+        //     return
+        // }
 
-        let insert = -1
-        let mid = Math.floor(len / 2)
-        if(num <= this.dataArr[mid]) {
-            for (let i = 0; i <= mid; i++) {
-                if(this.dataArr[i] >= num){
-                    insert = i
-                    break;
-                }
-            }
-        } else {
-            for (let i = mid; i < len; i++) {
-                if(this.dataArr[i] >= num){
-                    insert = i
-                    break;
-                }
-            }
-        }
+        // let insert = -1
+        // let mid = Math.floor(len / 2)
+        // if(num <= this.dataArr[mid]) {
+        //     for (let i = 0; i <= mid; i++) {
+        //         if(this.dataArr[i] >= num){
+        //             insert = i
+        //             break;
+        //         }
+        //     }
+        // } else {
+        //     for (let i = mid; i < len; i++) {
+        //         if(this.dataArr[i] >= num){
+        //             insert = i
+        //             break;
+        //         }
+        //     }
+        // }
 
-        if(insert < 0) {
-            this.dataArr.push(num)
-            return
-        }
-        const newArr = this.dataArr.splice(insert)
-        this.dataArr = this.dataArr.concat(num, newArr)
-
+        // if(insert < 0) {
+        //     this.dataArr.push(num)
+        //     return
+        // }
+        // const newArr = this.dataArr.splice(insert)
+        // this.dataArr = this.dataArr.concat(num, newArr)
+        this.dataArr.push(num)
     };
 
     /**
@@ -49,6 +49,7 @@
      */
     MedianFinder.prototype.findMedian = function() {
         console.log(this.dataArr);
+        this.dataArr = this.dataArr.sort((a,b) => a - b)
         
         const len = this.dataArr.length
 
