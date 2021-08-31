@@ -3,28 +3,31 @@
  * @return {number[]}
  */
  var plusOne = function(digits) {
-    let str = +digits.join('')
-    str = ++str
-    str = String(str).split('')
-    str = str.map(num => Number(num))
-    return str
+    // let str = +digits.join('')
+    // str = ++str
+    // str = String(str).split('')
+    // str = str.map(num => Number(num))
+    // return str
+
+    const end = digits.length - 1
+
+    digits[end]++
+
+    for (let i = end; i >= 0 ; i--) {
+        if(digits[i] <= 9) return digits
+
+        if(i === 0) {
+            digits[i] = 0
+            digits.unshift(1)
+            return digits
+        } else {
+            digits[i] = 0
+            digits[i - 1] += 1
+        }
+    }
+    return digits
 };
 
 
 console.log(plusOne([1,2,3])); // [1,2,4]
 console.log(plusOne([9])) // [1, 0]
-
-
-/**
- * 
- * 给定一个由 整数 组成的 非空 数组所表示的非负整数，在该数的基础上加一。
-
-    最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
-
-    你可以假设除了整数 0 之外，这个整数不会以零开头。
-
-    来源：力扣（LeetCode）
-    链接：https://leetcode-cn.com/problems/plus-one
-    著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
- * 
- */
