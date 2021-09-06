@@ -10,22 +10,30 @@
  */
  var search = function(nums, target) {
     if(!nums.length) return -1
-    let mid = Math.floor(nums.length / 2)
-    if(target <= nums[mid]) {
-        // 左
-        for (let i = 0; i <= mid; i++) {
-            if(nums[i] === target) {
-                return i
-            }          
-        }
-    } else {
-        // 右
-        for (let i = mid + 1; i < nums.length; i++) {
-            if(nums[i] === target) {
-                return i
-            }          
-        }
+    
+    let start = 0, end = nums.length
+    while (start <= end) {
+      // 中间索引
+      const mid = Math.floor((end - start) / 2) + start
+      // 中间值
+      const num = nums[mid]
+      if(num === target){
+        // 中间值等于目标值, 直接返回索引
+        return mid
+      } else if(num < target){
+        // 中间值小于目标值，说明如果数组中存在目标值应该在数组的右侧
+        // 所以，起始值索引为中间索引向右一位
+        start = mid + 1
+      } else {
+        // 中间值大于目标值，说明如果数组中存在目标值应该在数组的左侧
+        // 所以，结束索引为中间索引向左一位
+        end = mid -1
+      }
     }
 
+    // 上述条件皆不满足，则返回-1
     return -1
 };
+
+// console.log(search([0,1,2,3,4,5,6,7,8,9], 3)); // 3
+// console.log(search([-1,0,3,5,9,12], 9)); // 4
