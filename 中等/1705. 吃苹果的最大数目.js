@@ -17,7 +17,7 @@
  * @param {number[]} days
  * @return {number}
  */
-var eatenApples = function (apples, days) {
+ var eatenApples = function (apples, days) {
   // 当前剩余苹果数
   let storage = 0
   // 已过去的天数
@@ -32,18 +32,33 @@ var eatenApples = function (apples, days) {
     // 当前库存中已无苹果 且 以后也不会再长新苹果， 则当前eatNum即为所求结果
     if (storage <= 0 && i > apples.length) return eatNum
 
-    if (apples[i]) {
-      // 若今日新长了苹果，则吃个新鲜的
+    // if (apples[i]) {
+    //   // 若今日新长了苹果，则吃个新鲜的
+    //   apples[i] = apples[i] - 1
+    //   eatNum++
+    // } else if (storage > 0) {
+    //   // 若有库存，则今日吃掉一个库存中的苹果
+    //   storage--
+    //   eatNum++
+    // }
+
+    let flag = false
+
+    if (apples[i] && (storage == 0 || days[i] < 2)) {
+      // 若今日新长了苹果，且库存里没有了 | 不能存入库存，才能吃个新鲜的
       apples[i] = apples[i] - 1
       eatNum++
     } else if (storage > 0) {
       // 若有库存，则今日吃掉一个库存中的苹果
-      storage--
+      // storage--
       eatNum++
+      flag = true
     }
 
     // 今日剩余苹果，存入库存
     storage += apples[i] || 0
+
+    // console.log(9981, 1, 's:'+storage, apples[i], apples);
 
     // haveStillNotBadAppleDay 计算
 
@@ -56,18 +71,24 @@ var eatenApples = function (apples, days) {
 
       // 去除今日过后腐烂的苹果
       if (days[j] + j <= i + 1) {
+        // console.log(9981, 2, 's:'+storage, apples[i], apples, 'j:' + j, apples[j], days[j], ' i:' + i);
+        
         storage -= apples[j]
         // apples[j]中的数量可能包含今日吃掉的苹果数，所以这里需要控制库存数不能小于0
+        // console.log(9981, 3, 's:'+storage, apples[i], apples);
         storage = storage <= 0 ? 0 : storage
         apples[j] = 0
+      } else if(flag){
+        storage--
+        flag = false
       }
     }
 
     // 进入下一天
     i++
     console.log('storage:', storage, ' i:', i, ' eatNum:', eatNum, ' apples:', apples);
+    if(i === 12) return 'BROKEN - DOWN'
   }
-
   return eatNum
 };
 
@@ -79,3 +100,57 @@ var eatenApples = function (apples, days) {
 ].forEach(item => {
   console.log(eatenApples(item.apples, item.days));
 })
+
+// var eatenApples = function (apples, days) {
+//   // 当前剩余苹果数
+//   let storage = 0
+//   // 已过去的天数
+//   let i = 0;
+//   // 已吃掉的苹果数
+//   let eatNum = 0
+//   // 仍有未腐烂苹果的是第几天
+//   let haveStillNotBadAppleDay = 0
+
+//   while (storage > 0 || i <= apples.length) {
+
+//     // 当前库存中已无苹果 且 以后也不会再长新苹果， 则当前eatNum即为所求结果
+//     if (storage <= 0 && i > apples.length) return eatNum
+
+//     if (apples[i]) {
+//       // 若今日新长了苹果，则吃个新鲜的
+//       apples[i] = apples[i] - 1
+//       eatNum++
+//     } else if (storage > 0) {
+//       // 若有库存，则今日吃掉一个库存中的苹果
+//       storage--
+//       eatNum++
+//     }
+
+//     // 今日剩余苹果，存入库存
+//     storage += apples[i] || 0
+
+//     // haveStillNotBadAppleDay 计算
+
+//     for (let j = haveStillNotBadAppleDay; j <= i; j++) {
+//       // 此日已无苹果
+//       if (!apples[j]) continue;
+
+//       // 记录哪天仍有未腐烂苹果（下次查找腐烂苹果则从这天开始查起）
+//       if (!apples[haveStillNotBadAppleDay]) haveStillNotBadAppleDay = j
+
+//       // 去除今日过后腐烂的苹果
+//       if (days[j] + j <= i + 1) {
+//         storage -= apples[j]
+//         // apples[j]中的数量可能包含今日吃掉的苹果数，所以这里需要控制库存数不能小于0
+//         storage = storage <= 0 ? 0 : storage
+//         apples[j] = 0
+//       }
+//     }
+
+//     // 进入下一天
+//     i++
+//     console.log('storage:', storage, ' i:', i, ' eatNum:', eatNum, ' apples:', apples);
+//   }
+
+//   return eatNum
+// };
